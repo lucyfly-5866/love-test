@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>恋爱冷战倾向测试 | 专属分析报告</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        body {
+            background-color: #fdf7fa; /* 暖白背景 */
+            color: #333;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* 头部样式 */
+        header {
+            text-align: center;
+            padding: 40px 0 20px;
+        }
+        .logo {
+            font-size: 30px;
+            font-weight: 600;
+            color: #a855f7; /* 主色：温柔紫 */
+            margin-bottom: 8px;
+        }
+        .slogan {
+            font-size: 16px;
+            color: #737373;
+            margin-bottom: 20px;
+        }
+        /* 测试卡片 */
+        .test-card {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(255, 134, 179, 0.08);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-top: 4px solid #a855f7; /* 顶部紫条 */
+        }
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        /* 题目样式 */
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #fce7f3; /* 粉色细边框 */
+        }
+        .question:last-child {
+            border-bottom: none;
+            margin-bottom: 30px;
+            padding-bottom: 0;
+        }
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #2d2d2d;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option {
+            padding: 14px 16px;
+            border: 1px solid #fce7f3;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #fdf7fa;
+        }
+        /* 选中状态（视觉强反馈） */
+        .option.selected {
+            background-color: #faf0f5;
+            border-color: #a855f7;
+            color: #a855f7;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(168, 85, 247, 0.1);
+        }
+        .option:hover:not(.selected) {
+            background-color: #fef7fb;
+            border-color: #ff86b3;
+        }
+        /* 按钮样式 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #ff86b3, #a855f7);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #ff70a6, #9333ea);
+            transform: translateY(-2px);
+        }
+        /* 结果报告样式 */
+        .result-container {
+            display: none;
+        }
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #fce7f3;
+        }
+        .result-type {
+            font-size: 26px;
+            font-weight: 600;
+            color: #a855f7;
+            margin: 15px 0;
+        }
+        .result-tag {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #faf0f5;
+            color: #a855f7;
+            border-radius: 20px;
+            font-size: 14px;
+            margin: 0 5px 10px;
+            border: 1px solid #fce7f3;
+        }
+        .report-section {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d2d2d;
+            margin-bottom: 12px;
+        }
+        .section-content {
+            font-size: 16px;
+            color: #4b5563;
+            line-height: 1.9;
+            padding-left: 10px;
+        }
+        .suggestion-list {
+            list-style-type: disc;
+            padding-left: 30px;
+        }
+        .suggestion-list li {
+            margin-bottom: 10px;
+        }
+        /* 分数显示 */
+        .score-box {
+            background-color: #faf0f5;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 25px;
+            border: 1px solid #fce7f3;
+        }
+        .score-text {
+            font-size: 16px;
+            color: #737373;
+            margin-bottom: 5px;
+        }
+        .score-num {
+            font-size: 28px;
+            font-weight: 600;
+            color: #a855f7;
+        }
+        /* 底部样式 */
+        footer {
+            text-align: center;
+            font-size: 14px;
+            color: #9ca3af;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid #fce7f3;
+        }
+        .copyright {
+            font-size: 15px;
+            color: #a855f7;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        /* 适配手机 */
+        @media (max-width: 600px) {
+            .test-card {
+                padding: 20px;
+            }
+            .question-text {
+                font-size: 16px;
+            }
+            .logo {
+                font-size: 24px;
+            }
+            .result-type {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <div class="logo">恋爱冷战倾向测试</div>
+            <div class="slogan">10题精准测出你是逃避型、爆发型还是冷静型</div>
+        </header>
+
+        <!-- 测试卡片（做题页） -->
+        <div class="test-card" id="test-page">
+            <div class="card-title">请根据你的真实情况选择答案（共10题）</div>
+            <form id="test-form">
+                <!-- 题目1 -->
+                <div class="question">
+                    <div class="question-text">1. 恋人提出你不认同的观点，你会？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 立刻反驳，说出自己的立场，忍不住提高音量</div>
+                        <div class="option" data-score="1">B. 沉默不说话，心里默认“说了也没用”</div>
+                        <div class="option" data-score="2">C. 先听对方说完，再慢慢解释自己的想法</div>
+                        <div class="option" data-score="4">D. 表面同意，心里却记仇，之后故意冷淡</div>
+                    </div>
+                </div>
+                <!-- 题目2 -->
+                <div class="question">
+                    <div class="question-text">2. 冷战时，恋人发消息哄你，你会？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 秒回怼回去，把不满都发泄出来</div>
+                        <div class="option" data-score="1">B. 已读不回，想等对方更主动</div>
+                        <div class="option" data-score="2">C. 回复“我们聊聊”，主动化解矛盾</div>
+                        <div class="option" data-score="4">D. 简单回复“哦”“嗯”，故意吊对方胃口</div>
+                    </div>
+                </div>
+                <!-- 题目3 -->
+                <div class="question">
+                    <div class="question-text">3. 你认为冷战的目的是？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 让对方知道我很生气，必须听我的</div>
+                        <div class="option" data-score="1">B. 避免争吵升级，先冷静一下</div>
+                        <div class="option" data-score="2">C. 给双方空间，之后再解决问题</div>
+                        <div class="option" data-score="4">D. 惩罚对方，让他/她为自己的行为后悔</div>
+                    </div>
+                </div>
+                <!-- 题目4 -->
+                <div class="question">
+                    <div class="question-text">4. 被恋人误会时，你会？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 立刻大声解释，越说越激动</div>
+                        <div class="option" data-score="1">B. 不解释，觉得“懂我的人自然懂”</div>
+                        <div class="option" data-score="2">C. 找机会拿出证据，平静澄清</div>
+                        <div class="option" data-score="4">D. 故意说反话，让误会更深</div>
+                    </div>
+                </div>
+                <!-- 题目5 -->
+                <div class="question">
+                    <div class="question-text">5. 冷战持续多久你会主动破冰？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 不超过1小时，忍不住想解决问题</div>
+                        <div class="option" data-score="1">B. 超过3天，除非对方先低头</div>
+                        <div class="option" data-score="2">C. 1-2天，冷静后主动找对方</div>
+                        <div class="option" data-score="4">D. 看心情，可能一直冷到对方妥协</div>
+                    </div>
+                </div>
+                <!-- 题目6 -->
+                <div class="question">
+                    <div class="question-text">6. 恋人忘记重要纪念日，你会？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 当场发脾气，指责对方不重视你</div>
+                        <div class="option" data-score="1">B. 默默难过，之后几天都对他/她冷淡</div>
+                        <div class="option" data-score="2">C. 告诉对方你的感受，一起补过</div>
+                        <div class="option" data-score="4">D. 假装不在意，之后用其他方式报复</div>
+                    </div>
+                </div>
+                <!-- 题目7 -->
+                <div class="question">
+                    <div class="question-text">7. 冷战时，你会刷到恋人的朋友圈吗？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 点赞评论怼他/她，故意气对方</div>
+                        <div class="option" data-score="1">B. 偷偷看，但不互动，心里纠结</div>
+                        <div class="option" data-score="2">C. 主动发消息问“在干嘛”，打破僵局</div>
+                        <div class="option" data-score="4">D. 屏蔽对方，眼不见心不烦</div>
+                    </div>
+                </div>
+                <!-- 题目8 -->
+                <div class="question">
+                    <div class="question-text">8. 你觉得自己处理矛盾的方式？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 直来直去，有话就说，容易冲动</div>
+                        <div class="option" data-score="1">B. 习惯逃避，不想面对冲突</div>
+                        <div class="option" data-score="2">C. 理性沟通，尽量化解矛盾</div>
+                        <div class="option" data-score="4">D. 喜欢冷战，让对方猜心思</div>
+                    </div>
+                </div>
+                <!-- 题目9 -->
+                <div class="question">
+                    <div class="question-text">9. 恋人冷战时找别人倾诉，你会？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 立刻找他/她对质，质问为什么不找你</div>
+                        <div class="option" data-score="1">B. 更生气，冷战时间延长</div>
+                        <div class="option" data-score="2">C. 理解对方，主动沟通自己的感受</div>
+                        <div class="option" data-score="4">D. 也找别人倾诉，故意让对方知道</div>
+                    </div>
+                </div>
+                <!-- 题目10 -->
+                <div class="question">
+                    <div class="question-text">10. 冷战结束后，你会？</div>
+                    <div class="options">
+                        <div class="option" data-score="3">A. 还会翻旧账，提醒对方下次别犯错</div>
+                        <div class="option" data-score="1">B. 假装没事，但心里留下疙瘩</div>
+                        <div class="option" data-score="2">C. 和对方约定，以后尽量不冷战</div>
+                        <div class="option" data-score="4">D. 表面和好，下次还会用冷战解决问题</div>
+                    </div>
+                </div>
+                <!-- 提交按钮 -->
+                <button type="button" id="submit-btn" class="btn">提交答案，生成专属报告</button>
+            </form>
+        </div>
+
+        <!-- 结果报告页 -->
+        <div class="test-card result-container" id="result-page">
+            <div class="report-header">
+                <div class="card-title">你的恋爱冷战倾向专属分析报告</div>
+                <div class="result-type" id="result-type"></div>
+                <div>
+                    <span class="result-tag" id="tag1"></span>
+                    <span class="result-tag" id="tag2"></span>
+                    <span class="result-tag" id="tag3"></span>
+                </div>
+            </div>
+
+            <!-- 测试分数 -->
+            <div class="score-box">
+                <div class="score-text">你的测试总分</div>
+                <div class="score-num" id="total-score"></div>
+            </div>
+
+            <!-- 性格解析 -->
+            <div class="report-section">
+                <div class="section-title">一、冷战性格深度解析</div>
+                <div class="section-content" id="personality-analysis"></div>
+            </div>
+
+            <!-- 行为特点 -->
+            <div class="report-section">
+                <div class="section-title">二、典型行为表现</div>
+                <div class="section-content">
+                    <ul class="suggestion-list" id="behavior-traits"></ul>
+                </div>
+            </div>
+
+            <!-- 相处建议 -->
+            <div class="report-section">
+                <div class="section-title">三、改善冷战的实用建议</div>
+                <div class="section-content">
+                    <ul class="suggestion-list" id="suggestions"></ul>
+                </div>
+            </div>
+
+            <!-- 重新测试按钮 -->
+            <button type="button" id="retest-btn" class="btn btn-secondary">重新测试</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-text">本测试仅供参考，不构成专业心理咨询建议</div>
+        <div class="copyright">©️ 红柚</div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const options = document.querySelectorAll('.option');
+            const submitBtn = document.getElementById('submit-btn');
+            const retestBtn = document.getElementById('retest-btn');
+            const testPage = document.getElementById('test-page');
+            const resultPage = document.getElementById('result-page');
+            const totalScoreEl = document.getElementById('total-score');
+            const resultTypeEl = document.getElementById('result-type');
+            const personalityAnalysisEl = document.getElementById('personality-analysis');
+            const behaviorTraitsEl = document.getElementById('behavior-traits');
+            const suggestionsEl = document.getElementById('suggestions');
+            const tag1El = document.getElementById('tag1');
+            const tag2El = document.getElementById('tag2');
+            const tag3El = document.getElementById('tag3');
+
+            let selectedAnswers = [];
+
+            // 选项点击事件：选中/取消选中
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    const parentOptions = this.closest('.options');
+                    const questionIndex = Array.from(parentOptions.closest('.question').parentElement.children).indexOf(parentOptions.closest('.question'));
+
+                    // 先清除同一题的其他选中状态
+                    parentOptions.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+
+                    // 设置当前选项为选中状态
+                    this.classList.add('selected');
+
+                    // 保存选中的答案
+                    selectedAnswers[questionIndex] = this.getAttribute('data-score');
+                });
+            });
+
+            // 提交按钮事件
+            submitBtn.addEventListener('click', function() {
+                // 检查是否所有题目都已作答
+                if (selectedAnswers.length < 10 || selectedAnswers.some(ans => !ans)) {
+                    alert('请完成所有题目后再提交！');
+                    return;
+                }
+
+                // 计算总分
+                const totalScore = selectedAnswers.reduce((sum, score) => sum + parseInt(score), 0);
+
+                // 根据总分判断类型
+                let resultType, personalityAnalysis, behaviorTraits, suggestions, tags;
+
+                if (totalScore >= 30) {
+                    resultType = "🔥 爆发型冷战者";
+                    personalityAnalysis = "你在恋爱中遇到矛盾时，习惯用“情绪爆发”的方式应对——忍不住大声反驳、发泄不满，甚至翻旧账。其实你内心很在意这段关系，想快速解决问题，但冲动的语气和指责式表达，容易让对方感到压力，反而把矛盾推向激化。你不是“蛮不讲理”，只是不懂如何用温和的方式传递情绪。";
+                    behaviorTraits = [
+                        "情绪上来时容易提高音量、语速加快",
+                        "习惯先发泄情绪再考虑后果",
+                        "认为“大声才能让对方听进去”",
+                        "冷战结束后容易翻旧账"
+                    ];
+                    suggestions = [
+                        "情绪上来时先深呼吸30秒，默念“先冷静再说话”",
+                        "把“你怎么能这样”换成“我觉得有点难过，因为XX”",
+                        "爆发后别硬扛，主动说“刚才我太冲动了，对不起”",
+                        "学会用“我需要你做XX”代替指责"
+                    ];
+                    tags = ["情绪爆发", "冲动型", "直接表达"];
+                } else if (totalScore >= 20) {
+                    resultType = "🍃 冷静型沟通者";
+                    personalityAnalysis = "你是恋爱中的“理性派”，遇到矛盾不会冲动也不会逃避，更倾向于“沟通解决”。你懂得倾听对方的想法，也能清晰表达自己的立场，冷战对你来说只是“冷静期”，而不是“惩罚期”。这种方式能让你们的感情在矛盾中越来越稳固。";
+                    behaviorTraits = [
+                        "会先倾听对方的观点，再表达自己",
+                        "习惯用事实和逻辑沟通",
+                        "认为“冷战是冷静期，不是惩罚期”",
+                        "冷战结束后会复盘问题，避免再犯"
+                    ];
+                    suggestions = [
+                        "保持自己的沟通节奏，同时理解对方可能需要更多时间",
+                        "冷战时可以主动发一句“等你想聊了，我都在”",
+                        "定期和恋人约定“矛盾处理规则”",
+                        "学会用“我希望你能XX”表达需求"
+                    ];
+                    tags = ["理性沟通", "冷静型", "解决问题"];
+                } else if (totalScore >= 15) {
+                    resultType = "🕳️ 逃避型冷战者";
+                    personalityAnalysis = "你习惯用“沉默”或“回避”应对矛盾，心里想的是“不说就不会吵”，但这会让问题积压，甚至让对方感到被冷落。你不是不想解决问题，而是害怕冲突带来的紧张感，这种“冷处理”反而会让感情慢慢降温。";
+                    behaviorTraits = [
+                        "会选择沉默或回避，避免冲突",
+                        "心里想“不说就不会吵”",
+                        "冷战时间可能较长，需要对方主动破冰",
+                        "容易把问题积压，不直接表达需求"
+                    ];
+                    suggestions = [
+                        "给自己设定“冷静时间”（如10分钟），之后主动沟通",
+                        "用“我现在有点难过，想聊聊”代替沉默",
+                        "练习表达自己的真实感受，而不是藏在心里",
+                        "和对方约定“每天睡前聊5分钟”，预防冷战"
+                    ];
+                    tags = ["回避型", "沉默应对", "害怕冲突"];
+                } else {
+                    resultType = "🕵️‍♂️ 试探型冷战者";
+                    personalityAnalysis = "你喜欢用“冷战”试探对方的态度，让对方“猜你的心思”，但这种方式会让沟通效率变低，甚至引发更多误会。你不是故意让对方难受，而是用这种方式寻求安全感，确认对方是否在乎你。";
+                    behaviorTraits = [
+                        "习惯用冷战试探对方的在乎程度",
+                        "会让对方“猜你的心思”",
+                        "冷战时间不确定，取决于对方的反应",
+                        "容易用“故意冷淡”表达不满"
+                    ];
+                    suggestions = [
+                        "直接告诉对方你的感受，而不是让他/她猜",
+                        "用“我希望你能XX”代替试探行为",
+                        "和对方约定“有问题当天解决”，避免隔夜",
+                        "用小礼物或关心行为代替冷战"
+                    ];
+                    tags = ["试探型", "猜心思", "寻求确认"];
+                }
+
+                // 填充结果
+                totalScoreEl.textContent = totalScore;
+                resultTypeEl.textContent = resultType;
+                personalityAnalysisEl.textContent = personalityAnalysis;
+                behaviorTraitsEl.innerHTML = behaviorTraits.map(trait => `<li>${trait}</li>`).join('');
+                suggestionsEl.innerHTML = suggestions.map(sug => `<li>${sug}</li>`).join('');
+                tag1El.textContent = tags[0];
+                tag2El.textContent = tags[1];
+                tag3El.textContent = tags[2];
+
+                // 显示结果页，隐藏测试页
+                testPage.style.display = 'none';
+                resultPage.style.display = 'block';
+            });
+
+            // 重新测试按钮事件
+            retestBtn.addEventListener('click', function() {
+                // 清除所有选中状态
+                options.forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                // 重置选中答案数组
+                selectedAnswers = [];
+
+                // 显示测试页，隐藏结果页
+                testPage.style.display = 'block';
+                resultPage.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
